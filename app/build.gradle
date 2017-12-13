@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
 
 project.ext {
     version_name = '4.7.1'
@@ -16,9 +15,14 @@ repositories {
 }
 
 android {
+    signingConfigs {
+        opengurtest {
+            keyAlias 'opengurtest'
+            keyPassword 'test'
+        }
+    }
     compileSdkVersion 25
-    buildToolsVersion '25.0.1'
-
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.kennyc.open.imgur"
         minSdkVersion 17
@@ -27,25 +31,27 @@ android {
         buildConfigField "String", "API_CLIENT_ID", project.API_CLIENT_ID
         buildConfigField "String", "API_CLIENT_SECRET", project.API_CLIENT_SECRET
     }
-
+    flavorDimensions "default"
     productFlavors {
         full {
+            dimension "default"
             versionName project.ext.version_name
         }
 
         beta {
+            dimension "default"
             versionName project.ext.version_name + "-beta" + beta_number
         }
 
         f_droid {
+            dimension "default"
             versionName project.ext.version_name + "-F_Droid"
         }
     }
-
     buildTypes {
 
         release {
-            ext.enableCrashlytics = true
+            ext.enableCrashlytics = false
             minifyEnabled false
             manifestPlaceholders = [fabric_key: project.FABRIC_KEY]
         }
@@ -56,12 +62,10 @@ android {
             manifestPlaceholders = [fabric_key: ""]
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
     lintOptions {
         abortOnError false
     }
@@ -75,29 +79,26 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.ext.support_version}"
     compile "com.android.support:recyclerview-v7:${project.ext.support_version}"
     compile "com.android.support:design:${project.ext.support_version}"
-
     // UI
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.github.Kennyc1012:MultiStateView:1.2.0'
     compile 'com.github.Kennyc1012:BottomSheet:2.3.1'
     compile 'com.github.Kennyc1012:TextDrawable:1.1'
-    compile("com.github.Kennyc1012:CommonAdapters:1.0") {
+    compile('com.github.Kennyc1012:CommonAdapters:1.0') {
         exclude group: 'com.android.support'
     }
     compile 'com.pacioianu.david:ink-page-indicator:1.2.0'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.6.0'
     compile 'com.github.Kennyc1012:ColorChooser:0.3.0:standardRelease@aar'
     compile 'com.jakewharton:butterknife:8.4.0'
-
     // Networking
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.google.code.gson:gson:2.8.0'
-
     // Misc
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
     fullCompile('com.crashlytics.sdk.android:crashlytics:+@aar') {
         transitive = true;

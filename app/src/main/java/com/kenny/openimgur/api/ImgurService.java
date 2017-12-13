@@ -44,7 +44,7 @@ public interface ImgurService {
     @GET("/3/image/{id}")
     Call<PhotoResponse> getImageDetails(@Path("id") String imageId);
 
-    @GET("/3/gallery/{id}/images")
+    @GET("/3/album/{id}/images")
     Call<AlbumResponse> getAlbumImages(@Path("id") String albumId);
 
     @GET("/3/gallery/{id}/comments/{sort}")
@@ -101,7 +101,7 @@ public interface ImgurService {
     @GET("/3/gallery/search/top/{window}/{page}")
     Call<GalleryResponse> searchGalleryForTopSorted(@Path("window") String window, @Path("page") int page, @Query("q") String query);
 
-    @GET("/3/gallery/{id}/tags")
+    @GET("/3/album/{id}/tags")
     Call<TagResponse> getTags(@Path("id") String itemId);
 
     @GET("/3/notification?new=true")
